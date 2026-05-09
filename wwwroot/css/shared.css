@@ -1,0 +1,9 @@
+/* Minimal shared styles adapted from İlçeOrtak.css for initial scaffolding */
+:root{--navy:#1B2C5E;--gold:#C9A84C;--bg:#F0F2F7;--text:#1A1E2E}
+body{font-family:Nunito,system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);margin:0}
+.login-page{display:flex;align-items:center;justify-content:center;height:100vh}
+.login-card{background:#fff;padding:28px;border-radius:12px;box-shadow:0 6px 18px rgba(11,22,44,0.06);width:380px}
+.login-card h2{margin-bottom:18px;color:var(--navy)}
+form div{margin-bottom:12px}
+input[type=text],input[type=password],input[type=email],input{width:100%;padding:10px;border:1px solid #e6e9f2;border-radius:8px}
+button{background:var(--navy);color:#fff;padding:10px 14px;border-radius:8px;border:none;cursor:pointer}

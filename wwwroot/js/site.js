@@ -1,0 +1,1 @@
+// Minimal shared script placeholder

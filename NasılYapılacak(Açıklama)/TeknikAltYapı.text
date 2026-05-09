@@ -1,0 +1,7 @@
+Teknik  Alt Yapı: 
+1-MVC(Page yapısı kullanmayacağım KESİNLİKLE CONTTROLLER OLACAK ) 
+2-DataAcces ,Core,Business Katmanları Olacak(Katmanlı Mimari Yani) 
+3-Asp.CoreNet Kullan 8.0 (Long Term Support) 
+4-Nuget Pakaetleri -Microsoft.AspNetCore.Identity.EntityFrameworkCore(Bunu girişlerde ve ROL kısımlarında  
+Net Kullanacağım Çünkü Rolleri kolylaştırılıyor ) -Microsoft.EntityFrameworkCore -Microsoft.EntityFrameworkCore.SqlServer -Microsoft.EntityFrameworkCore.Tools -Microsoft.EntityFrameworkCore.Design 
+5-SqlServer=DESKTOP-V8KUQNR\SQLEXPRESS 

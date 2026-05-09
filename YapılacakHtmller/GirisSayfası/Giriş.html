@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş — Okul Yönetim Sistemi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #1B2C5E;
+            --navy2: #0F1A3A;
+            --gold: #C9A84C;
+            --gold2: #E8C96A;
+            --white: #FFFFFF;
+            --bg: #F0F2F7;
+            --text: #1A1E2E;
+            --muted: #6B7399;
+            --border: #D8DCF0;
+            --error: #C0392B;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            display: flex;
+            color: var(--text);
+        }
+
+        /* ── Sol panel ── */
+        .left {
+            width: 46%;
+            background: var(--navy2);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 48px 52px;
+            flex-shrink: 0;
+        }
+
+            /* Geometrik arka plan deseni */
+            .left::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: repeating-linear-gradient(60deg, rgba(201,168,76,0.04) 0px, rgba(201,168,76,0.04) 1px, transparent 1px, transparent 60px), repeating-linear-gradient(-60deg, rgba(201,168,76,0.04) 0px, rgba(201,168,76,0.04) 1px, transparent 1px, transparent 60px), radial-gradient(ellipse 80% 60% at 20% 80%, rgba(201,168,76,0.10) 0%, transparent 70%), radial-gradient(ellipse 60% 50% at 80% 20%, rgba(27,44,94,0.6) 0%, transparent 70%);
+                pointer-events: none;
+            }
+
+            /* Dekoratif daire */
+            .left::after {
+                content: '';
+                position: absolute;
+                bottom: -120px;
+                right: -120px;
+                width: 420px;
+                height: 420px;
+                border-radius: 50%;
+                border: 40px solid rgba(201,168,76,0.07);
+            }
+
+        .brand {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50px;
+            padding: 8px 16px 8px 10px;
+            margin-bottom: 52px;
+        }
+
+        .brand-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .brand-badge span {
+            font-size: 13px;
+            color: rgba(255,255,255,0.75);
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .left-title {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 38px;
+            line-height: 1.22;
+            color: var(--white);
+            position: relative;
+            z-index: 1;
+        }
+
+            .left-title em {
+                font-style: italic;
+                color: var(--gold2);
+            }
+
+        .left-desc {
+            font-size: 15px;
+            color: rgba(255,255,255,0.50);
+            margin-top: 20px;
+            line-height: 1.7;
+            max-width: 320px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .left-footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .role-pill {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.10);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.65);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .role-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ── Sağ panel ── */
+        .right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 32px;
+        }
+
+        .form-card {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .form-header {
+            margin-bottom: 36px;
+        }
+
+            .form-header h2 {
+                font-family: 'Libre Baskerville', serif;
+                font-size: 28px;
+                color: var(--text);
+                margin-bottom: 8px;
+            }
+
+            .form-header p {
+                font-size: 14.5px;
+                color: var(--muted);
+                font-weight: 400;
+            }
+
+        .year-select-wrap {
+            margin-bottom: 28px;
+        }
+
+        .year-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .year-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .year-tab {
+            flex: 1;
+            min-width: 130px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: var(--white);
+            font-family: 'Nunito', sans-serif;
+            font-size: 13.5px;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.18s;
+            text-align: center;
+        }
+
+            .year-tab.active {
+                border-color: var(--navy);
+                background: var(--navy);
+                color: var(--white);
+            }
+
+            .year-tab:not(.active):hover {
+                border-color: var(--navy);
+                color: var(--navy);
+            }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin-bottom: 28px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 7px;
+            letter-spacing: 0.2px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="email"] {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            font-family: 'Nunito', sans-serif;
+            font-size: 14.5px;
+            color: var(--text);
+            background: var(--white);
+            outline: none;
+            transition: border-color 0.18s, box-shadow 0.18s;
+            -webkit-appearance: none;
+        }
+
+        input:focus {
+            border-color: var(--navy);
+            box-shadow: 0 0 0 3px rgba(27,44,94,0.09);
+        }
+
+        input.error-input {
+            border-color: var(--error);
+            box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
+        }
+
+        .pass-wrap {
+            position: relative;
+        }
+
+            .pass-wrap input {
+                padding-right: 48px;
+            }
+
+        .toggle-pass {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: var(--muted);
+            line-height: 1;
+        }
+
+            .toggle-pass:hover {
+                color: var(--navy);
+            }
+
+        .field-hint {
+            font-size: 12px;
+            color: var(--error);
+            margin-top: 5px;
+            display: none;
+        }
+
+            .field-hint.show {
+                display: block;
+            }
+
+        .forgot {
+            display: block;
+            text-align: right;
+            font-size: 13px;
+            color: var(--muted);
+            text-decoration: none;
+            margin-top: -8px;
+            margin-bottom: 28px;
+            transition: color 0.15s;
+        }
+
+            .forgot:hover {
+                color: var(--navy);
+            }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.18s, transform 0.1s;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .btn-submit:hover {
+                background: #253d7a;
+            }
+
+            .btn-submit:active {
+                transform: scale(0.99);
+            }
+
+            .btn-submit.loading .btn-text {
+                opacity: 0;
+            }
+
+            .btn-submit.loading::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                margin: auto;
+                width: 22px;
+                height: 22px;
+                border: 2.5px solid rgba(255,255,255,0.3);
+                border-top-color: #fff;
+                border-radius: 50%;
+                animation: spin 0.7s linear infinite;
+            }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .error-banner {
+            background: #fdf2f1;
+            border: 1px solid #e8b4ae;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 13.5px;
+            color: var(--error);
+            margin-bottom: 18px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+            .error-banner.show {
+                display: flex;
+            }
+
+        .footer-note {
+            margin-top: 32px;
+            font-size: 12.5px;
+            color: var(--muted);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* Giriş animasyonu */
+        .form-card {
+            animation: fadeUp 0.4s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .left {
+                display: none;
+            }
+
+            .right {
+                padding: 24px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ── Sol Panel ── -->
+    <div class="left">
+        <div class="brand">
+            <div class="brand-badge">
+                <div class="brand-icon">🏫</div>
+                <span>Okul Yönetim Sistemi</span>
+            </div>
+
+            <h1 class="left-title">
+                Eğitimde<br>
+                <em>akıllı</em><br>
+                yönetim.
+            </h1>
+            <p class="left-desc">
+                İlçeden öğrenciye uzanan hiyerarşik yapıyı, eğitim öğretim yılı bazında tek platformda yönetin.
+            </p>
+        </div>
+
+        <div class="left-footer">
+            <div class="roles-grid">
+                <div class="role-pill">
+                    <span class="role-dot" style="background:#C9A84C"></span>
+                    İlçe Yönetimi
+                </div>
+                <div class="role-pill">
+                    <span class="role-dot" style="background:#5B8DEF"></span>
+                    Müdür
+                </div>
+                <div class="role-pill">
+                    <span class="role-dot" style="background:#4CAF88"></span>
+                    Müdür Yardımcısı
+                </div>
+                <div class="role-pill">
+                    <span class="role-dot" style="background:#E07B54"></span>
+                    Öğretmen
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Sağ Panel ── -->
+    <div class="right">
+        <div class="form-card">
+
+            <div class="form-header">
+                <h2>Hoş geldiniz</h2>
+                <p>Devam etmek için lütfen giriş yapın.</p>
+            </div>
+
+            <!-- Yıl seçimi -->
+            <!-- <div class="year-select-wrap">
+              <span class="year-label">Eğitim Öğretim Yılı</span>
+              <div class="year-tabs" id="yearTabs">
+                <button class="year-tab" onclick="selectYear(this,'2024-2025')">2024 – 2025</button>
+                <button class="year-tab active" onclick="selectYear(this,'2025-2026')">2025 – 2026</button>
+              </div> Bu özellik henüz aktif değil ve demo amaçlı olarak atlanmıştır.
+            </div> -->
+
+            <div class="divider"></div>
+
+            <!-- Hata banner -->
+            <div class="error-banner" id="errorBanner">
+                <span>⚠</span>
+                <span id="errorMsg">Kullanıcı adı veya şifre hatalı.</span>
+            </div>
+
+            <!-- Form -->
+            <form onsubmit="handleLogin(event)" novalidate>
+
+                <div class="field">
+                    <label for="tc">TC Kimlik No veya E-posta</label>
+                    <input type="text" id="tc" placeholder="12345678901" autocomplete="username">
+                    <span class="field-hint" id="tcHint">Bu alan zorunludur.</span>
+                </div>
+
+                <div class="field">
+                    <label for="pass">Şifre</label>
+                    <div class="pass-wrap">
+                        <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password">
+                        <button type="button" class="toggle-pass" onclick="togglePass()" title="Şifreyi göster/gizle">
+                            <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
+                        </button>
+                    </div>
+                    <span class="field-hint" id="passHint">Bu alan zorunludur.</span>
+                </div>
+
+                <a href="#" class="forgot">Şifremi unuttum</a>
+
+                <button type="submit" class="btn-submit" id="submitBtn">
+                    <span class="btn-text">Giriş Yap</span>
+                </button>
+
+            </form>
+
+            <p class="footer-note">
+                Giriş sorunu yaşıyorsanız okul yöneticinizle<br>veya ilçe yöneticisiyle iletişime geçin.
+            </p>
+
+        </div>
+    </div>
+
+    <script>
+        let selectedYear = '2025-2026';
+
+        function selectYear(el, year) {
+            document.querySelectorAll('.year-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            selectedYear = year;
+        }
+
+        function togglePass() {
+            const input = document.getElementById('pass');
+            const icon = document.getElementById('eyeIcon');
+            const show = input.type === 'password';
+            input.type = show ? 'text' : 'password';
+            icon.innerHTML = show
+                ? `<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19m-6.72-1.07a3 3 0 11-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`
+                : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+        }
+
+        function showError(msg) {
+            const b = document.getElementById('errorBanner');
+            document.getElementById('errorMsg').textContent = msg;
+            b.classList.add('show');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const tc = document.getElementById('tc').value.trim();
+            const pass = document.getElementById('pass').value.trim();
+            const btn = document.getElementById('submitBtn');
+
+            document.getElementById('errorBanner').classList.remove('show');
+            document.getElementById('tcHint').classList.remove('show');
+            document.getElementById('passHint').classList.remove('show');
+            document.getElementById('tc').classList.remove('error-input');
+            document.getElementById('pass').classList.remove('error-input');
+
+            let valid = true;
+            if (!tc) {
+                document.getElementById('tcHint').classList.add('show');
+                document.getElementById('tc').classList.add('error-input');
+                valid = false;
+            }
+            if (!pass) {
+                document.getElementById('passHint').classList.add('show');
+                document.getElementById('pass').classList.add('error-input');
+                valid = false;
+            }
+            if (!valid) return;
+
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            // Demo yönlendirme: rol tespiti simülasyonu
+            setTimeout(() => {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+
+                const roleMap = {
+                    'ilce': '../İlçe/İlçeDasboard.html',
+                    'okul': '../İlçe/İlçeOkullar.html',
+                    'mudur': '../İlçe/İlçeMüdürAta.html',
+                    'yil': '../İlçe/İlçeYılYönetim.html'
+                };
+
+                const role = roleMap[tc.toLowerCase()];
+                if (role) {
+                    window.location.href = role;
+                } else {
+                    showError('Kullanıcı adı veya şifre hatalı.');
+                }
+            }, 1200);
+        }
+    </script>
+
+</body>
+</html>

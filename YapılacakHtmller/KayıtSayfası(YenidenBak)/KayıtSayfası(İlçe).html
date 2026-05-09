@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>İlçe Kayıt | Staj Yönetim Sistemi</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0d1b2a;
+    --navy-mid: #1b2e45;
+    --navy-light: #243856;
+    --gold: #c9a84c;
+    --gold-light: #e2c47a;
+    --cream: #f5f0e8;
+    --cream-dark: #e8e0d0;
+    --text-main: #0d1b2a;
+    --text-muted: #5a6a7e;
+    --error: #c0392b;
+    --success: #1a7a4a;
+    --border: #cfc8bb;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background-color: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+    overflow-x: hidden;
+  }
+
+  /* ─── Sol Panel ─── */
+  .left-panel {
+    width: 42%;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 60px 52px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    border: 80px solid var(--navy-light);
+    top: -160px;
+    right: -160px;
+    opacity: 0.5;
+  }
+
+  .left-panel::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 50px solid var(--navy-light);
+    bottom: -80px;
+    left: -80px;
+    opacity: 0.4;
+  }
+
+  .brand {
+    position: relative;
+    z-index: 2;
+    animation: fadeSlideDown 0.7s ease both;
+  }
+
+  .brand-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 50px;
+    padding: 8px 18px;
+    margin-bottom: 48px;
+  }
+
+  .brand-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    animation: pulse 2s infinite;
+  }
+
+  .brand-badge span {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .brand-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 20px;
+  }
+
+  .brand-title em {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .brand-subtitle {
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+    max-width: 300px;
+    font-weight: 300;
+  }
+
+  .left-features {
+    position: relative;
+    z-index: 2;
+    animation: fadeSlideUp 0.8s 0.2s ease both;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid rgba(201,168,76,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .feature-icon svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .feature-text strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 3px;
+  }
+
+  .feature-text span {
+    font-size: 12.5px;
+    color: rgba(255,255,255,0.4);
+    font-weight: 300;
+  }
+
+  .left-footer {
+    position: relative;
+    z-index: 2;
+    font-size: 12px;
+    color: rgba(255,255,255,0.25);
+    animation: fadeIn 1s 0.4s ease both;
+  }
+
+  /* ─── Sağ Panel ─── */
+  .right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    background: var(--cream);
+    animation: fadeIn 0.6s ease both;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .form-header {
+    margin-bottom: 40px;
+    animation: fadeSlideDown 0.6s 0.1s ease both;
+  }
+
+  .step-indicator {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .step-dot {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--border);
+    flex: 1;
+    transition: background 0.3s;
+  }
+
+  .step-dot.active {
+    background: var(--gold);
+  }
+
+  .form-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 30px;
+    color: var(--text-main);
+    margin-bottom: 8px;
+  }
+
+  .form-header p {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  /* ─── Form ─── */
+  form {
+    animation: fadeSlideUp 0.6s 0.15s ease both;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .field-group {
+    margin-bottom: 20px;
+  }
+
+  .field-group.full {
+    grid-column: 1 / -1;
+  }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .input-wrap {
+    position: relative;
+  }
+
+  .input-wrap svg {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    stroke: var(--text-muted);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    pointer-events: none;
+    transition: stroke 0.25s;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 13px 14px 13px 42px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text-main);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    appearance: none;
+  }
+
+  input::placeholder {
+    color: #b0a99a;
+    font-weight: 300;
+  }
+
+  input:focus, select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+  }
+
+  input:focus + svg,
+  input:focus ~ svg {
+    stroke: var(--gold);
+  }
+
+  .input-wrap:focus-within svg {
+    stroke: var(--gold);
+  }
+
+  .toggle-pass {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+
+  .toggle-pass:hover { color: var(--navy); }
+
+  .toggle-pass svg {
+    position: static;
+    transform: none;
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  input[type="password"] { padding-right: 42px; }
+
+  /* Select arrow */
+  .select-wrap::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 6px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%235a6a7e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center;
+    pointer-events: none;
+  }
+  .select-wrap select { padding-right: 36px; }
+
+  .field-hint {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    margin-top: 6px;
+    font-weight: 300;
+  }
+
+  .field-error {
+    font-size: 11.5px;
+    color: var(--error);
+    margin-top: 6px;
+    display: none;
+  }
+
+  .field-group.has-error input,
+  .field-group.has-error select {
+    border-color: var(--error);
+    box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+  }
+
+  .field-group.has-error .field-error { display: block; }
+
+  /* Güç göstergesi */
+  .strength-bar {
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .strength-seg {
+    flex: 1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+
+  .strength-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 28px 0;
+    color: var(--border);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Sözleşme checkbox */
+  .check-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+
+  .check-group input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    padding: 0;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: var(--gold);
+    margin-top: 2px;
+  }
+
+  .check-group label {
+    font-size: 13px;
+    font-weight: 300;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--text-muted);
+    cursor: pointer;
+    line-height: 1.6;
+  }
+
+  .check-group label a {
+    color: var(--navy);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* Submit */
+  .btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s, transform 0.15s;
+    letter-spacing: 0.3px;
+  }
+
+  .btn-submit::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(201,168,76,0.2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .btn-submit:hover { background: var(--navy-mid); }
+  .btn-submit:hover::before { opacity: 1; }
+  .btn-submit:active { transform: scale(0.99); }
+
+  .btn-submit.loading {
+    pointer-events: none;
+    background: var(--navy-mid);
+  }
+
+  .btn-submit .btn-text { transition: opacity 0.2s; }
+  .btn-submit.loading .btn-text { opacity: 0; }
+
+  .btn-spinner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .btn-submit.loading .btn-spinner { opacity: 1; }
+
+  .btn-spinner svg {
+    width: 22px;
+    height: 22px;
+    stroke: white;
+    animation: spin 0.8s linear infinite;
+  }
+
+  .form-footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 13.5px;
+    color: var(--text-muted);
+    animation: fadeIn 0.8s 0.3s ease both;
+  }
+
+  .form-footer a {
+    color: var(--navy);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1.5px solid var(--gold);
+    padding-bottom: 1px;
+    transition: color 0.2s;
+  }
+
+  .form-footer a:hover { color: var(--gold); }
+
+  /* Başarı ekranı */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 20px 0;
+    animation: fadeSlideUp 0.5s ease both;
+  }
+
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(26,122,74,0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    animation: scaleIn 0.4s 0.1s ease both;
+  }
+
+  .success-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: var(--success);
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .success-screen h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 26px;
+    color: var(--text-main);
+    margin-bottom: 10px;
+  }
+
+  .success-screen p {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 32px;
+    font-weight: 300;
+  }
+
+  .btn-login {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 13px 28px;
+    background: var(--navy);
+    color: white;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.3s;
+  }
+
+  .btn-login:hover { background: var(--navy-mid); }
+
+  /* Animasyonlar */
+  @keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.6); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    body { flex-direction: column; }
+    .left-panel { width: 100%; padding: 40px 32px 36px; }
+    .brand-title { font-size: 30px; }
+    .left-features { display: none; }
+    .right-panel { padding: 40px 24px; }
+    .form-row { grid-template-columns: 1fr; }
+    .field-group.full { grid-column: auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────── SOL PANEL ─────────── -->
+<div class="left-panel">
+  <div class="brand">
+    <div class="brand-badge">
+      <div class="brand-badge-dot"></div>
+      <span>Staj Yönetim Sistemi</span>
+    </div>
+    <h1 class="brand-title">
+      Eğitimde<br>
+      <em>dijital</em><br>
+      yönetim.
+    </h1>
+    <p class="brand-subtitle">
+      Okullar, öğretmenler, öğrenciler ve işletmeler — hepsi tek platformda, yıl bazlı kayıt altında.
+    </p>
+  </div>
+
+  <div class="left-features">
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div class="feature-text">
+        <strong>Okul & İlçe Yönetimi</strong>
+        <span>Tüm okulları tek panelden kayıt edin</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div class="feature-text">
+        <strong>Hiyerarşik Yetki Yapısı</strong>
+        <span>Müdür, öğretmen ve öğrenci rolleri</span>
+      </div>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="feature-text">
+        <strong>Yıl Bazlı Kayıt</strong>
+        <span>Her eğitim yılı bağımsız ve değiştirilemez</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="left-footer">
+    © 2025 Staj Yönetim Sistemi · Tüm hakları saklıdır
+  </div>
+</div>
+
+<!-- ─────────── SAĞ PANEL ─────────── -->
+<div class="right-panel">
+  <div class="form-container">
+
+    <!-- Başarı ekranı -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>Kayıt Tamamlandı!</h3>
+      <p>İlçe hesabınız başarıyla oluşturuldu.<br>Sistem yöneticisi onayından sonra giriş yapabilirsiniz.</p>
+      <a href="giris.html" class="btn-login">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        Giriş Sayfasına Git
+      </a>
+    </div>
+
+    <!-- Form -->
+    <div id="formWrap">
+      <div class="form-header">
+        <div class="step-indicator">
+          <div class="step-dot active" id="s1"></div>
+          <div class="step-dot" id="s2"></div>
+          <div class="step-dot" id="s3"></div>
+        </div>
+        <h2>İlçe Kaydı</h2>
+        <p>Sisteme erişim için ilçe bilgilerini doldurun.</p>
+      </div>
+
+      <form id="registerForm" novalidate>
+
+        <!-- İlçe Bilgileri -->
+        <div class="form-row">
+          <div class="field-group full">
+            <label for="ilceAdi">İlçe Adı</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <input type="text" id="ilceAdi" placeholder="örn. Osmangazi" autocomplete="off">
+            </div>
+            <div class="field-error">İlçe adı zorunludur.</div>
+          </div>
+
+          <!-- <div class="field-group full">Gerek Yok Şimdilik, ilçe kaydı için bağlı olduğu ili seçmeye gerek yok gibi görünüyor. İleride ihtiyaç olursa eklenebilir.
+            <label for="ilSec">Bağlı İl</label>
+            <div class="input-wrap select-wrap">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <select id="ilSec">
+                <option value="">-- İl Seçin --</option>
+                <option>Adana</option><option>Adıyaman</option><option>Afyonkarahisar</option>
+                <option>Ağrı</option><option>Amasya</option><option>Ankara</option>
+                <option>Antalya</option><option>Artvin</option><option>Aydın</option>
+                <option>Balıkesir</option><option>Bilecik</option><option>Bingöl</option>
+                <option>Bitlis</option><option>Bolu</option><option>Burdur</option>
+                <option>Bursa</option><option>Çanakkale</option><option>Çankırı</option>
+                <option>Çorum</option><option>Denizli</option><option>Diyarbakır</option>
+                <option>Edirne</option><option>Elazığ</option><option>Erzincan</option>
+                <option>Erzurum</option><option>Eskişehir</option><option>Gaziantep</option>
+                <option>Giresun</option><option>Gümüşhane</option><option>Hakkari</option>
+                <option>Hatay</option><option>Isparta</option><option>Mersin</option>
+                <option>İstanbul</option><option>İzmir</option><option>Kars</option>
+                <option>Kastamonu</option><option>Kayseri</option><option>Kırklareli</option>
+                <option>Kırşehir</option><option>Kocaeli</option><option>Konya</option>
+                <option>Kütahya</option><option>Malatya</option><option>Manisa</option>
+                <option>Kahramanmaraş</option><option>Mardin</option><option>Muğla</option>
+                <option>Muş</option><option>Nevşehir</option><option>Niğde</option>
+                <option>Ordu</option><option>Rize</option><option>Sakarya</option>
+                <option>Samsun</option><option>Siirt</option><option>Sinop</option>
+                <option>Sivas</option><option>Tekirdağ</option><option>Tokat</option>
+                <option>Trabzon</option><option>Tunceli</option><option>Şanlıurfa</option>
+                <option>Uşak</option><option>Van</option><option>Yozgat</option>
+                <option>Zonguldak</option><option>Aksaray</option><option>Bayburt</option>
+                <option>Karaman</option><option>Kırıkkale</option><option>Batman</option>
+                <option>Şırnak</option><option>Bartın</option><option>Ardahan</option>
+                <option>Iğdır</option><option>Yalova</option><option>Karabük</option>
+                <option>Kilis</option><option>Osmaniye</option><option>Düzce</option>
+              </select>
+            </div>
+            <div class="field-error">Lütfen bir il seçin.</div>
+          </div>
+        </div> -->
+
+        <div class="divider">Yetkili Bilgileri</div>
+
+        <div class="form-row">
+          <div class="field-group">
+            <label for="yetkiliAd">Ad</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="yetkiliAd" placeholder="Ahmet">
+            </div>
+            <div class="field-error">Ad zorunludur.</div>
+          </div>
+
+          <div class="field-group">
+            <label for="yetkiliSoyad">Soyad</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" id="yetkiliSoyad" placeholder="Yılmaz">
+            </div>
+            <div class="field-error">Soyad zorunludur.</div>
+          </div>
+
+          <!-- <div class="field-group full"> Şu anlık düşünülmüyor Dürüst olmak gerekirse, bu alana girecek bilgiye gerek yok gibi görünüyor. İleride ihtiyaç olursa eklenebilir.
+            <label for="unvan">Unvan / Görev</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+              <input type="text" id="unvan" placeholder="örn. İlçe Milli Eğitim Müdürü">
+            </div>
+          </div>
+        </div> -->
+
+        <div class="divider">İletişim & Hesap</div>
+
+        <div class="form-row">
+          <div class="field-group full">
+            <label for="email">E-posta Adresi</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <input type="email" id="email" placeholder="ornek@meb.gov.tr" autocomplete="email">
+            </div>
+            <div class="field-error">Geçerli bir e-posta adresi girin.</div>
+          </div>
+
+          <div class="field-group full">
+            <label for="telefon">Telefon Numarası</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.18 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6a16 16 0 0 0 6.06 6.06l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <input type="tel" id="telefon" placeholder="0(___) ___ __ __" autocomplete="tel" maxlength="17">
+            </div>
+            <div class="field-error">Geçerli bir telefon numarası girin.</div>
+          </div>
+
+          <div class="field-group full">
+            <label for="sifre">Şifre</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="sifre" placeholder="En az 8 karakter" autocomplete="new-password">
+              <button type="button" class="toggle-pass" onclick="togglePass('sifre', this)">
+                <svg viewBox="0 0 24 24" class="eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div class="strength-bar">
+              <div class="strength-seg" id="seg1"></div>
+              <div class="strength-seg" id="seg2"></div>
+              <div class="strength-seg" id="seg3"></div>
+              <div class="strength-seg" id="seg4"></div>
+            </div>
+            <div class="strength-label" id="strengthLabel"></div>
+            <div class="field-error">Şifre en az 8 karakter olmalıdır.</div>
+          </div>
+
+          <div class="field-group full">
+            <label for="sifreTekrar">Şifre Tekrar</label>
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" id="sifreTekrar" placeholder="Şifreyi tekrar girin" autocomplete="new-password">
+              <button type="button" class="toggle-pass" onclick="togglePass('sifreTekrar', this)">
+                <svg viewBox="0 0 24 24" class="eye-icon"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div class="field-error" id="sifreTekrarError">Şifreler eşleşmiyor.</div>
+          </div>
+        </div>
+
+        <div class="check-group" style="margin-top:8px">
+          <input type="checkbox" id="kvkk">
+          <label for="kvkk">
+            <a href="#">Kullanım Koşulları</a>'nı ve <a href="#">KVKK Aydınlatma Metni</a>'ni okudum, kabul ediyorum.
+          </label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <span class="btn-text">Kaydı Tamamla</span>
+          <span class="btn-spinner">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="rgba(255,255,255,0.3)" stroke-width="3"/><path d="M12 2a10 10 0 0 1 10 10" stroke="white" stroke-width="3" stroke-linecap="round"/></svg>
+          </span>
+        </button>
+      </form>
+
+      <p class="form-footer">
+        Zaten hesabınız var mı? <a href="giris.html">Giriş yapın</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ─── Şifre göster/gizle ───
+  function togglePass(id, btn) {
+    const input = document.getElementById(id);
+    const isText = input.type === 'text';
+    input.type = isText ? 'password' : 'text';
+    btn.querySelector('.eye-icon').innerHTML = isText
+      ? '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>'
+      : '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+  }
+
+  // ─── Şifre gücü ───
+  document.getElementById('sifre').addEventListener('input', function () {
+    const v = this.value;
+    let score = 0;
+    if (v.length >= 8) score++;
+    if (/[A-Z]/.test(v)) score++;
+    if (/[0-9]/.test(v)) score++;
+    if (/[^A-Za-z0-9]/.test(v)) score++;
+
+    const colors = ['', '#c0392b', '#e67e22', '#f1c40f', '#1a7a4a'];
+    const labels = ['', 'Çok Zayıf', 'Zayıf', 'Orta', 'Güçlü'];
+    for (let i = 1; i <= 4; i++) {
+      document.getElementById('seg' + i).style.background = i <= score ? colors[score] : 'var(--border)';
+    }
+    document.getElementById('strengthLabel').textContent = v.length ? labels[score] : '';
+    document.getElementById('strengthLabel').style.color = colors[score];
+
+    // Step indicator
+    document.getElementById('s2').classList.toggle('active', v.length > 0);
+    document.getElementById('s3').classList.toggle('active', score >= 3);
+  });
+
+  // ─── Telefon maskesi ───
+  document.getElementById('telefon').addEventListener('input', function () {
+    let v = this.value.replace(/\D/g, '');
+    if (v.length > 11) v = v.slice(0, 11);
+    let out = '';
+    if (v.length > 0) out = '0(' + v.slice(1, 4);
+    if (v.length >= 4) out += ') ' + v.slice(4, 7);
+    if (v.length >= 7) out += ' ' + v.slice(7, 9);
+    if (v.length >= 9) out += ' ' + v.slice(9, 11);
+    this.value = out;
+  });
+
+  // ─── Validasyon yardımcıları ───
+  function setError(id, show) {
+    const group = document.getElementById(id).closest('.field-group');
+    group.classList.toggle('has-error', show);
+  }
+
+  function validateForm() {
+    let ok = true;
+
+    const ilceAdi = document.getElementById('ilceAdi').value.trim();
+    setError('ilceAdi', !ilceAdi); if (!ilceAdi) ok = false;
+
+    const il = document.getElementById('ilSec').value;
+    setError('ilSec', !il); if (!il) ok = false;
+
+    const ad = document.getElementById('yetkiliAd').value.trim();
+    setError('yetkiliAd', !ad); if (!ad) ok = false;
+
+    const soyad = document.getElementById('yetkiliSoyad').value.trim();
+    setError('yetkiliSoyad', !soyad); if (!soyad) ok = false;
+
+    const email = document.getElementById('email').value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    setError('email', !emailOk); if (!emailOk) ok = false;
+
+    const tel = document.getElementById('telefon').value.replace(/\D/g, '');
+    const telOk = tel.length === 11;
+    setError('telefon', !telOk); if (!telOk) ok = false;
+
+    const sifre = document.getElementById('sifre').value;
+    const sifreOk = sifre.length >= 8;
+    setError('sifre', !sifreOk); if (!sifreOk) ok = false;
+
+    const sifreTekrar = document.getElementById('sifreTekrar').value;
+    const eslesme = sifreOk && sifre === sifreTekrar;
+    setError('sifreTekrar', !eslesme);
+    document.getElementById('sifreTekrarError').textContent = !sifreTekrar ? 'Bu alan zorunludur.' : 'Şifreler eşleşmiyor.';
+    if (!eslesme) ok = false;
+
+    if (!document.getElementById('kvkk').checked) {
+      alert('Kullanım koşullarını ve KVKK metnini kabul etmeniz gerekmektedir.');
+      ok = false;
+    }
+
+    return ok;
+  }
+
+  // ─── Form submit ───
+  document.getElementById('registerForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const btn = document.getElementById('submitBtn');
+    btn.classList.add('loading');
+
+    // Simüle edilmiş API çağrısı
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      document.getElementById('formWrap').style.display = 'none';
+      const s = document.getElementById('successScreen');
+      s.style.display = 'block';
+    }, 1800);
+  });
+
+  // Anlık hata temizleme
+  document.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', () => {
+      el.closest('.field-group').classList.remove('has-error');
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,46 @@
+@model DashboardHomeViewModel
+@{
+    Layout = "_IlceLayout";
+    ViewData["Title"] = "İlçe Dashboard";
+    ViewData["ActiveMenu"] = "Dashboard";
+    ViewData["TopbarTitle"] = "Dashboard";
+}
+
+<div class="content">
+    <div class="stats-grid">
+        <div class="stat-card gold"><div class="stat-label">Toplam Okul</div><div class="stat-value">@Model.SchoolCount</div><div class="stat-sub">İlçe genelinde</div></div>
+        <div class="stat-card blue"><div class="stat-label">Toplam Müdür</div><div class="stat-value">@Model.PrincipalCount</div><div class="stat-sub">Atanmış okul sayısı</div></div>
+        <div class="stat-card green"><div class="stat-label">Toplam Öğrenci</div><div class="stat-value">@Model.StudentCount</div><div class="stat-sub">Bu yıl sisteme eklenen</div></div>
+        <div class="stat-card orange"><div class="stat-label">Toplam İşletme</div><div class="stat-value">312</div><div class="stat-sub">Staj için onaylı</div></div>
+    </div>
+
+    <div class="two-col">
+        <div class="card">
+            <div class="card-header">
+                <h3>Okul Listesi (Son 5)</h3>
+                <a href="/Dashboard/Okullar" class="btn btn-primary btn-sm">Tümünü Gör</a>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>Okul Adı</th><th>Müdür</th><th>Öğrenci</th><th>Durum</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var school in Model.Schools.Take(5))
+                    {
+                        <tr>
+                            <td>@school.Name</td>
+                            <td>@(school.PrincipalName ?? "—")</td>
+                            <td>@school.StudentCount</td>
+                            <td><span class="badge @(school.PrincipalName == null ? "badge-gold" : "badge-green")">@(school.PrincipalName == null ? "Müdürsüz" : "Aktif")</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    @if (TempData["Toast"] is string toast && !string.IsNullOrWhiteSpace(toast))
+    {
+        <div class="toast show" style="position:fixed;bottom:24px;right:24px;z-index:999;">@toast</div>
+    }
+</div>

@@ -1,0 +1,18 @@
+Bak projem :Okulu ilçe((Yani admin)  ) kayıt edecek ilçe tarafından  müdürler atanacak müdürler müdür yardımcılarını müdür yardımcıları ve müdür/ler ise öğretmenleri atayacak öğretmenlerde Öğrencileri sisteme müdür veya müdür yardımcıları tarafından atanan işletmelere atayacak Tüm bu olaylar 2024 2025 eğitim öğretim yılı gibi yıllara bölünecek(Yani kayıt altında tutulacak) ve her yıldaki işlemler ilçe ve müdürler yardımcıları ve öğretmenler tarafında görülebilecek  iyice anladın mı olayı FAKAT değiştirilemeycek sonraki yıllarda
+Roller ve Yetkiler
+1. İlçe (Admin) Sistemin en üst yöneticisidir. Okulları sisteme kaydeder ve her okula müdür atar. Tüm yıllara ait tüm işlemleri görüntüleyebilir.
+2. Müdür Kendi okuluna bağlıdır. Müdür yardımcısı ve öğretmen atayabilir. Okula ait işletmeleri sisteme ekleyebilir. Kendi okulundaki tüm yıllara ait işlemleri görüntüleyebilir.
+3. Müdür Yardımcısı Müdür tarafından atanır. Öğretmen atayabilir. Okula ait işletmeleri sisteme ekleyebilir. Kendi okulundaki tüm yıllara ait işlemleri görüntüleyebilir.
+4. Öğretmen Müdür veya müdür yardımcısı tarafından atanır. Öğrencileri sisteme ekler ve öğrencileri işletmelere atar. Kendi öğrencilerine ait işlemleri görüntüleyebilir.
+5. Öğrenci Öğretmen tarafından sisteme eklenir. Bir öğretmene ve bir işletmeye bağlanır.
+6. İşletme Müdür veya müdür yardımcısı tarafından okula bağlı olarak sisteme eklenir. Öğretmenler öğrencileri bu işletmelere atar.
+
+Yıl Bazlı Yapı
+Her eğitim öğretim yılı birbirinden bağımsız bir kapsam oluşturur. Müdür atamaları, öğretmen atamaları, öğrenci kayıtları ve işletme atamaları hepsi ilgili yıl altında saklanır. Yeni bir yılda tüm atama işlemleri sıfırdan yapılır; bir önceki yılın verileri devredilmez. Tüm roller kendi yetki kapsamlarındaki geçmiş yıl işlemlerini görüntüleyebilir.
+
+Yıl Bazlı Yapıda bir önceki yıla müdale edilemeyeceğini unutma
+
+
+
+
+

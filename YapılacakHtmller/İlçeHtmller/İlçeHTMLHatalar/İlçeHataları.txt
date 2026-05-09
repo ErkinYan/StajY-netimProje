@@ -1,0 +1,29 @@
+
+1-DashBoard 
+1-Son Aktiviteler Çalışmıyor Gerekte yok sil direkt
+2-Okul Doluluk Oranlarını KALDIR
+
+
+2-OKULLAR 
+-Durum sütununu  Kaldır Ana listede(Düzenlenin İçindendede var )
+
+
+3-Müdrü Atama 
+-Müdür Değiştirilemiyor 
+-Müdürleri Atanmış ve Atanmamış Okullar Ayrı Listelerde Görülecek ve Güncelleme Atamışlar Listeden Ekleme Atanmamışlar listesinden Yapılacak 
+-Müdür Değiştirmede Listeden  Müdürü Değiştirilecek Okul Listeden Üstüne Tıklanarak Seçilecek
+
+4-Yıl Yönetimi 
+-Yıl Adına Sadece Sayı girelebilsin Yani 2026A-2027B olmasın sadece 2026-2027 gibi olacak 
+
+5-Profil
+-Profilde HardCoded Ahmet Yılmaz var Onlar yerine giriş yapan kişinin adı görüntülencek
+-
+
+6-Geçmiş Yıllar 
+-Zaten girilen her dönem Ayrı ayrı kaydedilip Yıl Yönetiminden Görüntülenebileceği için Geçmiş Yıllar Bölümüne gerek yok silinecek
+
+
+
+ÖNEMLİ 
+1-YIL YÖNETİMNDEN GEÇMİŞ YIL SEÇİLİNCE O YILLARADA YAPILMIŞ İŞLEMLER Hali hazırdaki sayfalarda gözükücek DashBoard da yılın bilgileri Okullarda o yılın Okulları olacak yani

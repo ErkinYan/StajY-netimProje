@@ -1,0 +1,144 @@
+@model List<School>
+@{
+    Layout = "_IlceLayout";
+    ViewData["Title"] = "Müdür Atama";
+    ViewData["ActiveMenu"] = "MudurAta";
+    ViewData["TopbarTitle"] = "Müdür Atama";
+    var unassignedSchools = (ViewData["UnassignedSchools"] as List<School>) ?? new List<School>();
+    var assignedSchools = (ViewData["AssignedSchools"] as List<School>) ?? new List<School>();
+    var isReadOnlyYear = (bool)(ViewData["IsReadOnlyYear"] ?? false);
+}
+
+<div class="content">
+    <div class="two-col">
+        <div class="card">
+            <div class="card-header"><h3>Okula Müdür Ata</h3><p>Okul seçin, ardından müdür bilgilerini girin</p></div>
+            <div class="card-body">
+                <div class="info-box">ℹ Atama işlemi <strong>@(ViewData["YearText"] ?? "2025–2026")</strong> eğitim öğretim yılı kapsamında geçerli olacaktır.</div>
+                @if (isReadOnlyYear)
+                {
+                    <div class="warn-box" style="margin-top:10px">⚠ Geçmiş yıl görüntüleniyor. Müdür atama/güncelleme kapalıdır.</div>
+                }
+                <form asp-action="AssignPrincipal" asp-controller="Dashboard" method="post" id="principalForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="schoolId" id="schoolId" />
+
+                    <p style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px">Atanmamış Okullar (Ekleme)</p>
+                    <div class="okul-list" style="margin-bottom:16px">
+                        @if (unassignedSchools.Count == 0)
+                        {
+                            <div style="font-size:13px;color:var(--muted);padding:8px 0">Atanmamış okul yok.</div>
+                        }
+
+                        @foreach (var school in unassignedSchools)
+                        {
+                            <div class="okul-item" data-school-id="@school.Id" data-school-name="@school.Name" data-principal-name="" data-principal-tc="" data-principal-email="" data-principal-phone="" onclick="selectSchool(this)">
+                                <div class="okul-item-left">
+                                    <div class="okul-name">@school.Name</div>
+                                    <div class="okul-sub">@school.District</div>
+                                </div>
+                                <span class="badge badge-gold">Müdürsüz</span>
+                            </div>
+                        }
+                    </div>
+
+                    <p style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px">Atanmış Okullar (Güncelleme)</p>
+                    <div class="okul-list" style="margin-bottom:16px">
+                        @if (assignedSchools.Count == 0)
+                        {
+                            <div style="font-size:13px;color:var(--muted);padding:8px 0">Atanmış okul yok.</div>
+                        }
+
+                        @foreach (var school in assignedSchools)
+                        {
+                            <div class="okul-item" data-school-id="@school.Id" data-school-name="@school.Name" data-principal-name="@school.PrincipalName" data-principal-tc="@school.PrincipalTc" data-principal-email="@school.PrincipalEmail" data-principal-phone="@school.PrincipalPhone" onclick="selectSchool(this)">
+                                <div class="okul-item-left">
+                                    <div class="okul-name">@school.Name</div>
+                                    <div class="okul-sub">@school.District</div>
+                                </div>
+                                <span class="badge badge-green">Müdür atanmış</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="field"><label>Ad Soyad</label><input type="text" name="principalName" id="mudurAd" placeholder="Müdürün adı soyadı"></div>
+                    <div class="field"><label>TC Kimlik No</label><input type="text" name="principalTc" id="mudurTC" placeholder="12345678901" maxlength="11"></div>
+                    <div class="field"><label>E-posta</label><input type="email" name="principalEmail" id="mudurEmail" placeholder="ornek@meb.gov.tr"></div>
+                    <div class="field"><label>Telefon</label><input type="tel" name="principalPhone" id="mudurTel" placeholder="05xx xxx xx xx"></div>
+                    <button class="btn btn-primary" type="submit" id="assignButton" @(isReadOnlyYear ? "disabled" : null)>Müdürü Ata / Güncelle</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header"><h3>Mevcut Müdür Atamaları</h3><p>Aktif atamalar</p></div>
+            <table>
+                <thead><tr><th>Okul</th><th>Müdür</th><th>Telefon</th><th>İşlem</th></tr></thead>
+                <tbody>
+                    @foreach (var school in assignedSchools)
+                    {
+                        <tr>
+                            <td>@school.Name</td>
+                            <td><strong>@school.PrincipalName</strong></td>
+                            <td>@(school.PrincipalPhone ?? "—")</td>
+                            <td><span class="badge badge-green">Kayıtlı</span></td>
+                        </tr>
+                    }
+                    @if (assignedSchools.Count == 0)
+                    {
+                        <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">Henüz atanmış müdür yok.</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@if (TempData["Toast"] is string toast && !string.IsNullOrWhiteSpace(toast))
+{
+    <div class="toast show" id="toast">@toast</div>
+}
+else
+{
+    <div class="toast" id="toast"></div>
+}
+
+<script>
+let selectedSchoolId = null;
+const isReadOnlyYear = @(isReadOnlyYear ? "true" : "false");
+function selectSchool(el) {
+    if (isReadOnlyYear) { return; }
+  document.querySelectorAll('.okul-item').forEach(i => i.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSchoolId = el.dataset.schoolId;
+  document.getElementById('schoolId').value = selectedSchoolId;
+
+    const principalName = el.dataset.principalName ?? '';
+    const principalTc = el.dataset.principalTc ?? '';
+    const principalEmail = el.dataset.principalEmail ?? '';
+    const principalPhone = el.dataset.principalPhone ?? '';
+
+    document.getElementById('mudurAd').value = principalName;
+    document.getElementById('mudurTC').value = principalTc;
+    document.getElementById('mudurEmail').value = principalEmail;
+    document.getElementById('mudurTel').value = principalPhone;
+
+    const button = document.getElementById('assignButton');
+    button.textContent = principalName ? 'Müdürü Güncelle' : 'Müdürü Ata';
+}
+
+document.getElementById('principalForm').addEventListener('submit', function (e) {
+    if (isReadOnlyYear) { e.preventDefault(); return; }
+  if (!selectedSchoolId) { e.preventDefault(); showToast('⚠ Lütfen bir okul seçin'); return; }
+  const ad = document.getElementById('mudurAd').value.trim();
+  const tc = document.getElementById('mudurTC').value.trim();
+  if (!ad || !tc) { e.preventDefault(); showToast('⚠ Ad Soyad ve TC zorunludur'); }
+});
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+</script>

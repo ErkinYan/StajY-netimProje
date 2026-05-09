@@ -1,0 +1,18 @@
+@{
+    Layout = "_IlceLayout";
+    ViewData["Title"] = "Profil";
+    ViewData["ActiveMenu"] = "Profil";
+    ViewData["TopbarTitle"] = "Profil";
+}
+
+<div class="content">
+    <div class="card">
+        <div class="card-header"><h3>Profil</h3><p>İlçe yöneticisi bilgileri</p></div>
+        <div class="card-body">
+            <div class="field"><label>Ad Soyad</label><input type="text" value="@ViewData["ProfileFullName"]" readonly></div>
+            <div class="field"><label>E-posta</label><input type="text" value="@ViewData["ProfileEmail"]" readonly></div>
+            <div class="field"><label>Rol</label><input type="text" value="İlçe Yöneticisi" readonly></div>
+            <p style="font-size:13px;color:var(--muted)">Bu sayfa şu anda sadece görünüm amaçlıdır.</p>
+        </div>
+    </div>
+</div>

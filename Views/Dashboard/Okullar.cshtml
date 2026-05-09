@@ -1,0 +1,124 @@
+@model List<School>
+@{
+    Layout = "_IlceLayout";
+    ViewData["Title"] = "Okullar";
+    ViewData["ActiveMenu"] = "Okullar";
+    ViewData["TopbarTitle"] = "Okullar";
+    var isReadOnlyYear = (bool)(ViewData["IsReadOnlyYear"] ?? false);
+}
+
+<div class="content">
+    <div class="toolbar">
+        <div class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" placeholder="Okul ara..." oninput="filterTable(this.value)">
+        </div>
+        <button class="btn btn-primary" type="button" onclick="openSchoolModal()" @(isReadOnlyYear ? "disabled" : null)>+ Okul Ekle</button>
+    </div>
+
+    @if (isReadOnlyYear)
+    {
+        <div class="info-box" style="margin-bottom:12px">ℹ Geçmiş yıl görüntüleniyor. Bu sayfa yalnızca okunabilir modda.</div>
+    }
+
+    <div class="card">
+        <table id="okulTable">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Okul Adı</th>
+                    <th>Adres</th>
+                    <th>Müdür</th>
+                    <th>Öğrenci</th>
+                    <th>İşlem</th>
+                </tr>
+            </thead>
+            <tbody id="okulBody">
+                @for (var i = 0; i < Model.Count; i++)
+                {
+                    var school = Model[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@school.Name</td>
+                        <td>@school.Address</td>
+                        <td>@(school.PrincipalName ?? "—")</td>
+                        <td>@school.StudentCount</td>
+                        <td>
+                            <div class="td-actions">
+                                <button class="btn btn-ghost btn-sm" type="button" onclick="editSchool(@school.Id,'@school.Name','@school.District','@school.Address',@school.StudentCount,@school.IsActive.ToString().ToLowerInvariant())" @(isReadOnlyYear ? "disabled" : null)>Düzenle</button>
+                                <button class="btn btn-danger btn-sm" type="button" onclick="confirmDelete(@school.Id,'@school.Name')" @(isReadOnlyYear ? "disabled" : null)>Sil</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="overlay" id="schoolModal" onclick="closeOnBg(event,'schoolModal')">
+    <div class="modal">
+        <div class="modal-header">
+            <h3 id="schoolModalTitle">Yeni Okul Ekle</h3>
+            <button class="modal-close" type="button" onclick="closeModal('schoolModal')">×</button>
+        </div>
+        <form asp-action="SaveSchool" asp-controller="Dashboard" method="post" id="schoolForm">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" id="schoolId" value="0" />
+            <div class="modal-body">
+                <div class="field"><label>Okul Adı</label><input type="text" name="name" id="schoolName" required></div>
+                <div class="field"><label>İlçe / Semt</label><input type="text" name="district" id="schoolDistrict" required></div>
+                <div class="field"><label>Tam Adres</label><input type="text" name="address" id="schoolAddress" required></div>
+                <div class="field"><label>Öğrenci Sayısı</label><input type="number" name="studentCount" id="schoolStudentCount" min="0" value="0"></div>
+                <div class="field" style="display:flex;align-items:center;gap:8px">
+                    <input type="checkbox" name="isActive" id="schoolIsActive" value="true" checked style="width:18px;height:18px;margin:0">
+                    <label for="schoolIsActive" style="margin:0;text-transform:none;letter-spacing:0;font-size:13px">Aktif</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" type="button" onclick="closeModal('schoolModal')">İptal</button>
+                <button class="btn btn-primary" type="submit" @(isReadOnlyYear ? "disabled" : null)>Kaydet</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="overlay" id="deleteModal" onclick="closeOnBg(event,'deleteModal')">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Okulu Sil</h3>
+            <button class="modal-close" type="button" onclick="closeModal('deleteModal')">×</button>
+        </div>
+        <form asp-action="DeleteSchool" asp-controller="Dashboard" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="id" id="deleteSchoolId" />
+            <div class="modal-body">
+                <p style="font-size:14px;line-height:1.6;color:var(--muted)"><strong id="deleteTarget" style="color:var(--text)"></strong> adlı okul silinecek. Bu işlem geri alınamaz.</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-ghost" type="button" onclick="closeModal('deleteModal')">İptal</button>
+                <button class="btn btn-danger" type="submit" @(isReadOnlyYear ? "disabled" : null)>Evet, Sil</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (TempData["Toast"] is string toast && !string.IsNullOrWhiteSpace(toast))
+{
+    <div class="toast show" id="toast">@toast</div>
+}
+else
+{
+    <div class="toast" id="toast"></div>
+}
+
+<script>
+const isReadOnlyYear = @(isReadOnlyYear ? "true" : "false");
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+function closeOnBg(e,id){if(e.target===document.getElementById(id))closeModal(id)}
+function openSchoolModal(){if(isReadOnlyYear)return;document.getElementById('schoolModalTitle').textContent='Yeni Okul Ekle';document.getElementById('schoolId').value='0';document.getElementById('schoolName').value='';document.getElementById('schoolDistrict').value='';document.getElementById('schoolAddress').value='';document.getElementById('schoolStudentCount').value='0';document.getElementById('schoolIsActive').checked=true;openModal('schoolModal')}
+function editSchool(id,name,district,address,studentCount,isActive){if(isReadOnlyYear)return;document.getElementById('schoolModalTitle').textContent='Okulu Düzenle';document.getElementById('schoolId').value=id;document.getElementById('schoolName').value=name;document.getElementById('schoolDistrict').value=district;document.getElementById('schoolAddress').value=address;document.getElementById('schoolStudentCount').value=studentCount;document.getElementById('schoolIsActive').checked=isActive==='true';openModal('schoolModal')}
+function confirmDelete(id,name){if(isReadOnlyYear)return;document.getElementById('deleteSchoolId').value=id;document.getElementById('deleteTarget').textContent=name;openModal('deleteModal')}
+function filterTable(q){document.querySelectorAll('#okulBody tr').forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none')}
+</script>
